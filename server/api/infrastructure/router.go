@@ -20,6 +20,8 @@ func Init() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	e.Use(middleware.CORS())
+
 	e.POST("/login", func(c echo.Context) error { return authController.Login(c) })
 	e.POST("/signup", func(c echo.Context) error { return userController.Create(c) })
 

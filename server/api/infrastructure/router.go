@@ -12,6 +12,7 @@ func Init() {
 
 	authController := controllers.NewAuthController(NewSqlHandler())
 	userController := controllers.NewUserController(NewSqlHandler())
+	paperController := controllers.NewPaperController(NewSqlHandler())
 	roomController := controllers.NewRoomController(NewSqlHandler())
 	commentController := controllers.NewCommentController(NewSqlHandler())
 
@@ -28,6 +29,12 @@ func Init() {
 	api.GET("/users/:id", func(c echo.Context) error { return userController.Show(c) })
 	api.PUT("/users/:id", func(c echo.Context) error { return userController.Save(c) })
 	api.DELETE("/users/:id", func(c echo.Context) error { return userController.Delete(c) })
+
+	api.GET("/papers", func(c echo.Context) error { return paperController.Index(c) })
+	api.GET("/papers/:id", func(c echo.Context) error { return paperController.Show(c) })
+	api.POST("/papers", func(c echo.Context) error { return paperController.Create(c) })
+	api.PUT("/papers/:id", func(c echo.Context) error { return paperController.Update(c) })
+	api.DELETE("/papers/:id", func(c echo.Context) error { return paperController.Delete(c) })
 
 	api.GET("/comments", func(c echo.Context) error { return commentController.Index(c) })
 	api.GET("/comments/:id", func(c echo.Context) error { return commentController.Show(c) })

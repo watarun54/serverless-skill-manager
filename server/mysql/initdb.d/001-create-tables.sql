@@ -72,3 +72,23 @@ insert into comments(text, user_id) values("comment1", 1);
 insert into comments(text, user_id) values("comment2", 1);
 insert into comments(text, user_id) values("comment3", 2);
 insert into comments(text, user_id) values("comment4", 2);
+
+
+---- drop ----
+DROP TABLE IF EXISTS `papers`;
+
+---- create ----
+create table IF not exists `papers` (
+ `id`               BIGINT AUTO_INCREMENT,
+ `url`              VARCHAR(255) NOT NULL,
+ `text`             VARCHAR(255) NOT NULL,
+ `user_id`          BIGINT NOT NULL,
+ `created_at`       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated_at`       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+insert into papers(url, text, user_id) values("http://example.com/", "paper1", 1);
+insert into papers(url, text, user_id) values("http://example.com/", "paper2", 1);
+insert into papers(url, text, user_id) values("http://example.com/", "paper3", 2);
+insert into papers(url, text, user_id) values("http://example.com/", "paper4", 2);

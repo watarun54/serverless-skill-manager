@@ -20,10 +20,17 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { withStyles } from "@material-ui/core/styles";
 
-import PaperIndex from './Paper/Index';
-import SginIn from './User/SignIn';
-import SignUp from './User/SignUp';
-import UserEdit from './User/Edit';
+import { compose } from 'redux'
+import { connect } from "react-redux";
+
+import { logout } from "../actions/User";
+
+import PaperIndex from './paper/Index';
+import SginIn from './SignIn';
+import SignUp from './SignUp';
+import UserEdit from './user/Edit';
+import Auth from "./Auth.jsx";
+
 
 const drawerWidth = 240;
 
@@ -84,20 +91,28 @@ const styles = theme => ({
   },
 });
 
+const unauthedMenus = [
+  {text: 'Sign up', path: '/signup'},
+  {text: 'Sign in', path: '/login'},
+];
+
+const authMenus = [
+  {text: 'Home', path: '/'},
+  {text: 'Settings', path: '/settings'},
+  {text: 'Logout', path: '/loguot'},
+];
 
 class Container extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      links: [
-        {text: 'Home', path: '/'},
-        {text: 'Sign up', path: '/signup'},
-        {text: 'Sign in', path: '/login'},
-        {text: 'Logout', path: '/loguot'},
-        {text: 'Settings', path: '/settings'},
-      ],
+      menus: this.props.user.session ? authMenus : unauthedMenus,
     }
+  }
+
+  componentWillReceiveProps = nextState => {
+    this.setState({menus: nextState.user.session ? authMenus : unauthedMenus})
   }
 
   handleDrawerOpen = () => {
@@ -107,6 +122,12 @@ class Container extends React.Component {
   handleDrawerClose = () => {
     this.setState({open: false});
   };
+
+  onLogout = e => {
+    e.preventDefault();
+    this.props.dispatch(logout());
+    window.location.href = '/login'
+  }
 
   render() {
     const { classes } = this.props;
@@ -152,14 +173,26 @@ class Container extends React.Component {
           </div>
           <Divider />
           <List>
-            {this.state.links.map((hash, index) => (
-              <Link to={hash.path}>
-              <ListItem button key={hash.text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={hash.text} />
-              </ListItem>
-              </Link>
-            ))}
+            {this.state.menus.map((hash, index) => {
+              if (hash.path == '/loguot') {
+                return (
+                  <Link key={index} to='/' onClick={this.onLogout.bind(this)}>
+                  <ListItem button key={index}>
+                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                    <ListItemText primary={hash.text} />
+                  </ListItem>
+                  </Link>
+                )
+              }
+              return (
+                <Link key={index} to={hash.path}>
+                <ListItem button key={index}>
+                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                  <ListItemText primary={hash.text} />
+                </ListItem>
+                </Link>
+              )
+            })}
           </List>
         </Drawer>
         <div
@@ -169,10 +202,14 @@ class Container extends React.Component {
         >
         <div className={classes.drawerHeader} />
           <Switch>
-            <Route exact path='/'><PaperIndex {...this.props} /></Route>
             <Route path='/login'><SginIn /></Route>
             <Route path='/signup'><SignUp /></Route>
-            <Route path='/settings'><UserEdit /></Route>
+            <Auth>
+              <Switch>
+                <Route exact path='/'><PaperIndex {...this.props} /></Route>
+                <Route path='/settings'><UserEdit /></Route>
+              </Switch>
+            </Auth>
           </Switch>
         </div>
         </BrowserRouter>
@@ -181,4 +218,9 @@ class Container extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Container);
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  connect(state => (
+    { user: state.user }
+  )
+))(Container)

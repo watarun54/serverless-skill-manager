@@ -5,13 +5,13 @@ import Button from '@material-ui/core/Button';
 
 const Form = (props) => {
   return (
-  <form className="siimple-form" onSubmit={props.handleAdd}>
-    <div className="siimple-form-field">
-      <StyledTextField required id="filled-basic" name="title" label="URL" variant="filled"/>
-      <StyledButton type="submit" variant="contained">Send</StyledButton>
-    </div>
-  </form>
- );
+    <form className="siimple-form" onSubmit={props.handleAdd}>
+      <div className="siimple-form-field">
+        <StyledTextField required id="filled-basic" name="title" label="URL" variant="filled"/>
+        <StyledButton type="submit" variant="contained">Send</StyledButton>
+      </div>
+    </form>
+  );
 }
 
 const StyledTextField = styled(TextField)`

@@ -9,7 +9,7 @@ import (
 )
 
 type PaperController struct {
-	Interactor usecase.PaperInteractor
+	Interactor    usecase.PaperInteractor
 	ScrapeHandler IScrapeHandler
 }
 

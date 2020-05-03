@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS `users`;
 create table IF not exists `users` (
  `id`               BIGINT AUTO_INCREMENT,
  `name`             VARCHAR(255) NOT NULL,
- `email`            VARCHAR(255) NOT NULL,
+ `email`            VARCHAR(255) NOT NULL UNIQUE,
  `hashed_password`  VARCHAR(255) NOT NULL,
  `created_at`       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `updated_at`       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

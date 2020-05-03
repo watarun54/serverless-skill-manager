@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Divider from '@material-ui/core/Divider';
 import { withStyles } from "@material-ui/core/styles";
 
 import { getPapers, deletePaper } from '../../actions/Paper';
@@ -23,11 +24,15 @@ const styles = theme => ({
     maxWidth: 752,
   },
   list: {
-    backgroundColor: '#dde5ee',
+    backgroundColor: '#fefefe',
     borderRadius: '5px',
   },
   title: {
     margin: theme.spacing(4, 0, 2),
+  },
+  link: {
+    textDecoration: 'none',
+    color: '#3f51b5',
   },
 });
 
@@ -48,29 +53,35 @@ class PaperList extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const paperListLength = this.props.paper.paperList.length;
     return (
-      <Grid item s={12} md={8}>
+      <Grid item s={12} md={9}>
         <div className={classes.list}>
           <List dense={true}>
             {this.props.paper.paperList.slice(this.props.offset, this.props.offset + this.props.parPage).map((paper, i) => {
               return (
-                <ListItem key={i}>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <FolderIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText>
-                    <Link href={paper.url} rel="noopener" target="_blank" rel="noopener">
-                      {paper.text}
-                    </Link>
-                  </ListItemText>
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete" onClick={() => this.handleDelete(i)}>
-                      <DeleteIcon style={{color: '#ee675d'}} />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
+                <div key={i}>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <FolderIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText>
+                      <Link href={paper.url} rel="noopener" target="_blank" rel="noopener">
+                        {paper.text}
+                      </Link>
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="delete" onClick={() => this.handleDelete(i)}>
+                        <DeleteIcon style={{color: '#ee675d'}} />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  {paperListLength !== i+1 &&
+                    <Divider variant="inset" component="li" />
+                  }
+                </div>
               );
             })}
           </List>

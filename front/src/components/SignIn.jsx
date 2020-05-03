@@ -50,7 +50,8 @@ const styles = theme => ({
     marginTop: theme.spacing(1),
   },
   errMsg: {
-    color: 'red',
+    color: '#f50057',
+    textAlign: 'center',
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },

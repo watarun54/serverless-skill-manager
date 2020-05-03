@@ -90,16 +90,20 @@ const styles = theme => ({
     }),
     marginLeft: 0,
   },
+  link: {
+    textDecoration: 'none',
+    color: '#3f51b5',
+  }
 });
 
 const unauthedMenus = [
-  {text: 'Sign up', path: '/signup'},
   {text: 'Sign in', path: '/login'},
+  {text: 'Sign up', path: '/signup'},
 ];
 
 const authMenus = [
   {text: 'Home', path: '/'},
-  {text: 'Settings', path: '/settings'},
+  {text: 'Setting', path: '/settings'},
   {text: 'Logout', path: '/loguot'},
 ];
 
@@ -154,7 +158,7 @@ class Container extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap>
+            <Typography variant="h5" component="h1" noWrap>
               Skill Manager
             </Typography>
           </Toolbar>
@@ -178,7 +182,7 @@ class Container extends React.Component {
             {this.state.menus.map((hash, index) => {
               if (hash.path == '/loguot') {
                 return (
-                  <Link key={index} to='/' onClick={this.onLogout.bind(this)}>
+                  <Link key={index} to='/' onClick={this.onLogout.bind(this)} className={classes.link}>
                   <ListItem button key={index}>
                     <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                     <ListItemText primary={hash.text} />
@@ -187,7 +191,7 @@ class Container extends React.Component {
                 )
               }
               return (
-                <Link key={index} to={hash.path}>
+                <Link key={index} to={hash.path} className={classes.link}>
                 <ListItem button key={index}>
                   <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                   <ListItemText primary={hash.text} />

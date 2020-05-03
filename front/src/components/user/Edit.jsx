@@ -41,7 +41,7 @@ export default function UserEdit() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Settings
+          Setting
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>

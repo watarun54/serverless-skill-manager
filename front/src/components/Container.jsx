@@ -18,6 +18,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Button from '@material-ui/core/Button';
 import { withStyles } from "@material-ui/core/styles";
 
 import { compose } from 'redux'
@@ -55,6 +56,9 @@ const styles = theme => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
   },
   hide: {
     display: 'none',
@@ -103,7 +107,7 @@ const unauthedMenus = [
 
 const authMenus = [
   {text: 'Home', path: '/'},
-  {text: 'Setting', path: '/settings'},
+  {text: 'Setting', path: '/setting'},
   {text: 'Logout', path: '/loguot'},
 ];
 
@@ -158,9 +162,12 @@ class Container extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h5" component="h1" noWrap>
+            <Typography variant="h5" noWrap className={classes.title}>
               Skill Manager
             </Typography>
+            {this.props.user.name.length > 0 &&
+              <Typography>{this.props.user.name}さん</Typography>
+            }
           </Toolbar>
         </AppBar>
         <Drawer
@@ -213,7 +220,7 @@ class Container extends React.Component {
             <Auth>
               <Switch>
                 <Route exact path='/'><PaperIndex {...this.props} /></Route>
-                <Route path='/settings'><UserEdit /></Route>
+                <Route path='/setting'><UserEdit /></Route>
               </Switch>
             </Auth>
           </Switch>

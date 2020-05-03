@@ -73,7 +73,7 @@ class SignUp extends React.Component {
 
   componentWillReceiveProps = nextState => {
     console.log(nextState.user)
-    if (nextState.user.name.length > 0 ) {
+    if (nextState.user.uid !== 0 ) {
       this.props.history.push("/login");
     } else if (nextState.user.errMsg.length > 0) {
       this.setState({ "message": nextState.user.errMsg });

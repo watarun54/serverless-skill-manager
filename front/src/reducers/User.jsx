@@ -3,6 +3,7 @@ import { setStorage, getStorage, removeStorage } from "../infra/localStorage";
 const initialState = {
   token: getStorage("token"),
   status: 0, //0:処理前 1:ログイン成功 -1:ログイン失敗
+  uid: 0,
   name: '',
   email: '',
   errMsg: '',
@@ -18,6 +19,8 @@ export default function userReducer(state = initialState, action) {
     case "LOGIN_RECEIVE_SUCCESS":
       _state.status = 1;
       _state.token = action.data.token;
+      _state.uid = action.data.uid;
+      _state.name = action.data.name;
       setStorage("token", _state.token);
       return _state;
 

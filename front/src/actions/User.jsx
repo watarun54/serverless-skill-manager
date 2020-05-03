@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 import { restfulApiConfig } from "../config.js";
 
 export function login(email, password) {
@@ -7,7 +8,13 @@ export function login(email, password) {
     const data = {email: email, password: password};
     axios.post(restfulApiConfig.apiURL + "/login", data)
       .then(response => {
-        dispatch(receiveLoginSuccess(response.data));
+        const decodedJWT = jwt_decode(response.data.token);
+        const data = {
+          token: response.data.token,
+          uid: decodedJWT.uid,
+          name: decodedJWT.name,
+        }
+        dispatch(receiveLoginSuccess(data));
       })
       .catch(e => {
         dispatch(receiveLoginFailed());

@@ -53,6 +53,9 @@ func (repo *UserRepository) Update(u domain.User) (user domain.User, err error) 
 }
 
 func (repo *UserRepository) DeleteById(user domain.User) (err error) {
+	if err = repo.Debug().Where("user_id = ?", user.ID).Delete(user.Papers).Error; err != nil {
+		return
+	}
 	if err = repo.Debug().Delete(&user).Error; err != nil {
 		return
 	}

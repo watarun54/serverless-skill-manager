@@ -39,7 +39,7 @@ export default function userReducer(state = initialState, action) {
       return _state;
 
     case "USER_RECEIVE_FAILED":
-      _state.errMsg = action.data.errMsg;
+      _state.errMsg = action.data;
       return _state;
 
     default:

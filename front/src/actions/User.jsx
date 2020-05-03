@@ -24,7 +24,7 @@ export function signup(name, email, password) {
         dispatch(receiveUserSuccess(response.data.data));
       })
       .catch(e => {
-        dispatch(receiveUserFailed(e));
+        dispatch(receiveUserFailed(e.response.data.message));
       });
   };
 }

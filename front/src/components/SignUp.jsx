@@ -45,13 +45,13 @@ const styles = theme => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(1),
   },
   errMsg: {
     color: '#f50057',
     textAlign: 'center',
     marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(4),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -75,7 +75,7 @@ class SignUp extends React.Component {
     console.log(nextState.user)
     if (nextState.user.name.length > 0 ) {
       this.props.history.push("/login");
-    } else if (nextState.user.errMsg < 0) {
+    } else if (nextState.user.errMsg.length > 0) {
       this.setState({ "message": nextState.user.errMsg });
     }
   }

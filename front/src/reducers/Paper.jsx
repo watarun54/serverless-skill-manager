@@ -8,10 +8,7 @@ export default function paperReducer(state = initialState, action) {
   switch (action.type) {
 
     case 'START_REQUEST':
-      return {
-        paperList: [],
-        error: false
-      };
+      return state;
 
     case 'RECEIVE_DATA':
       return action.payload.error

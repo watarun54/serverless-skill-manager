@@ -10,9 +10,10 @@ func Init() {
 	// Echo instance
 	e := echo.New()
 
+	scrapeController := controllers.NewScrapeController(NewScrapeHandler())
 	authController := controllers.NewAuthController(NewSqlHandler())
 	userController := controllers.NewUserController(NewSqlHandler())
-	paperController := controllers.NewPaperController(NewSqlHandler())
+	paperController := controllers.NewPaperController(NewSqlHandler(), NewScrapeHandler())
 	roomController := controllers.NewRoomController(NewSqlHandler())
 	commentController := controllers.NewCommentController(NewSqlHandler())
 
@@ -24,6 +25,8 @@ func Init() {
 
 	e.POST("/login", func(c echo.Context) error { return authController.Login(c) })
 	e.POST("/signup", func(c echo.Context) error { return userController.Create(c) })
+
+	e.POST("/scrape/title", func(c echo.Context) error { return scrapeController.GetPaperTitle(c) })
 
 	api := e.Group("/api")
 	api.Use(middleware.JWTWithConfig(controllers.NewJWTConfig()))

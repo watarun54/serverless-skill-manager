@@ -10,15 +10,17 @@ import (
 
 type PaperController struct {
 	Interactor usecase.PaperInteractor
+	ScrapeHandler IScrapeHandler
 }
 
-func NewPaperController(sqlHandler database.SqlHandler) *PaperController {
+func NewPaperController(sqlHandler database.SqlHandler, scrapeHandler IScrapeHandler) *PaperController {
 	return &PaperController{
 		Interactor: usecase.PaperInteractor{
 			PaperRepository: &database.PaperRepository{
 				SqlHandler: sqlHandler,
 			},
 		},
+		ScrapeHandler: scrapeHandler,
 	}
 }
 
@@ -58,6 +60,12 @@ func (controller *PaperController) Create(c Context) (err error) {
 		UserID: uid,
 	}
 	c.Bind(&com)
+	title, err := controller.ScrapeHandler.GetTitleFromURL(com.URL)
+	if err != nil {
+		c.JSON(500, NewError(err))
+		return
+	}
+	com.Text = title
 	paper, err := controller.Interactor.Add(com)
 	if err != nil {
 		c.JSON(500, NewError(err))

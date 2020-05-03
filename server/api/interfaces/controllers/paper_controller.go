@@ -62,10 +62,10 @@ func (controller *PaperController) Create(c Context) (err error) {
 	c.Bind(&com)
 	title, err := controller.ScrapeHandler.GetTitleFromURL(com.URL)
 	if err != nil {
-		c.JSON(500, NewError(err))
-		return
+		com.Text = "Faild to scrape title"
+	} else {
+		com.Text = title
 	}
-	com.Text = title
 	paper, err := controller.Interactor.Add(com)
 	if err != nil {
 		c.JSON(500, NewError(err))

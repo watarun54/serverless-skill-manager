@@ -56,6 +56,7 @@ class PaperList extends React.Component {
     const paperListLength = this.props.paper.paperList.length;
     return (
       <Grid item s={12} md={9}>
+        {paperListLength > 0 &&
         <div className={classes.list}>
           <List dense={true}>
             {this.props.paper.paperList.slice(this.props.offset, this.props.offset + this.props.parPage).map((paper, i) => {
@@ -86,7 +87,8 @@ class PaperList extends React.Component {
             })}
           </List>
         </div>
-      </Grid>
+        }
+        </Grid>
     );
   }
 }

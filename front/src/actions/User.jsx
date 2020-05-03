@@ -15,6 +15,20 @@ export function login(email, password) {
   };
 }
 
+export function signup(name, email, password) {
+  return dispatch => {
+    dispatch(requestUser());
+    const data = {name: name, email: email, password: password};
+    axios.post(restfulApiConfig.apiURL + "/signup", data)
+      .then(response => {
+        dispatch(receiveUserSuccess(response.data.data));
+      })
+      .catch(e => {
+        dispatch(receiveUserFailed(e));
+      });
+  };
+}
+
 export function logout() {
   return { type: "LOGOUT" };
 }
@@ -34,5 +48,23 @@ function receiveLoginSuccess(data) {
 function receiveLoginFailed() {
   return {
     type: "LOGIN_RECEIVE_FAILED"
+  };
+}
+
+function requestUser() {
+  return { type: "USER_REQUEST" };
+}
+
+function receiveUserSuccess(data) {
+  return {
+    type: "USER_RECEIVE_SUCCESS",
+    data: data
+  };
+}
+
+function receiveUserFailed(errMsg) {
+  return {
+    type: "USER_RECEIVE_FAILED",
+    data: errMsg
   };
 }

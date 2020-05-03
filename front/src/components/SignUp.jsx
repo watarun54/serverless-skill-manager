@@ -16,6 +16,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { compose } from 'redux'
 import { withRouter } from 'react-router';
 import { connect } from "react-redux";
+import { signup } from "../actions/User";
 
 
 function Copyright() {
@@ -46,6 +47,12 @@ const styles = theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
+  errMsg: {
+    color: '#f50057',
+    textAlign: 'center',
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
@@ -53,9 +60,38 @@ const styles = theme => ({
 
 
 class SignUp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { "message": null };
+  }
+
   componentWillMount = () => {
     if (this.props.user.token) {
       this.props.history.push("/");
+    }
+  }
+
+  componentWillReceiveProps = nextState => {
+    console.log(nextState.user)
+    if (nextState.user.name.length > 0 ) {
+      this.props.history.push("/login");
+    } else if (nextState.user.errMsg < 0) {
+      this.setState({ "message": nextState.user.errMsg });
+    }
+  }
+
+  onSignup = e => {
+    e.preventDefault();
+
+    let name = e.target.name.value;
+    let email = e.target.email.value;
+    let password = e.target.password.value;
+
+    if (name && email && password) {
+      this.setState({ "message": null });
+      this.props.dispatch(signup(name, email, password));
+    } else {
+      this.setState({ "message": "Name,Email,パスワードを入力してください" });
     }
   }
 
@@ -71,29 +107,19 @@ class SignUp extends React.Component {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} onSubmit={this.onSignup}>
+            <Box component="span" display="block" className={classes.errMsg}>{this.state.message}</Box>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
-                  autoComplete="fname"
-                  name="firstName"
+                  autoComplete="name"
+                  name="name"
                   variant="outlined"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="name"
+                  label="Name"
                   autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="lname"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -131,7 +157,7 @@ class SignUp extends React.Component {
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="" variant="body2" onClick={() => this.props.history.push("/login")}>
                   Already have an account? Sign in
                 </Link>
               </Grid>

@@ -106,7 +106,7 @@ class SignIn extends React.Component {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate onSubmit={this.onLogin}>
+          <form className={classes.form} onSubmit={this.onLogin}>
             <Box component="span" display="block" className={classes.errMsg}>{this.state.message}</Box>
             <TextField
               variant="outlined"
@@ -150,7 +150,7 @@ class SignIn extends React.Component {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="" variant="body2" onClick={() => this.props.history.push("/signup")}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

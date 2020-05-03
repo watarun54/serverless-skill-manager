@@ -7,7 +7,6 @@ export function login(email, password) {
     const data = {email: email, password: password};
     axios.post(restfulApiConfig.apiURL + "/login", data)
       .then(response => {
-        console.log(response.data);
         dispatch(receiveLoginSuccess(response.data));
       })
       .catch(e => {

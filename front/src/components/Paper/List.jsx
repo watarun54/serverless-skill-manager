@@ -2,20 +2,41 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const List = (props) => (
-  <SiimpleList className="siimple-list">
-    {props.todos.slice(props.offset, props.offset + props.parPage).map((todo, i) => {
-      return (
-        <SiimpleListItem key={i} className="siimple-list-item siimple--bg-white">
-          {todo.title}
-          <DeleteButton aria-label="delete" onClick={() => props.handleDelete(i)}>
-            <DeleteIcon />
-          </DeleteButton>
-        </SiimpleListItem>
-      );
-    })}
-  </SiimpleList>
-);
+import { connect } from "react-redux";
+import { getPapers, deletePaper } from '../../actions/Paper';
+
+
+class List extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    this.props.dispatch(getPapers());
+  }
+
+  handleDelete = idx => {
+    const id = this.props.paper.paperList[idx].id
+    this.props.dispatch(deletePaper(id))
+  }
+
+  render() {
+    return (
+      <SiimpleList className="siimple-list">
+        {this.props.paper.paperList.slice(this.props.offset, this.props.offset + this.props.parPage).map((paper, i) => {
+          return (
+            <SiimpleListItem key={i} className="siimple-list-item siimple--bg-white">
+              {paper.url}
+              <DeleteButton aria-label="delete" onClick={() => this.handleDelete(i)}>
+                <DeleteIcon />
+              </DeleteButton>
+            </SiimpleListItem>
+          );
+        })}
+      </SiimpleList>
+    );
+  }
+}
 
 const SiimpleList = styled.ul`
   display: inline;
@@ -31,4 +52,9 @@ const DeleteButton = styled.span`
   float: right;
 `;
 
-export default List;
+export default connect(state => (
+  {
+    user: state.user,
+    paper: state.paper,
+  }
+))(List)

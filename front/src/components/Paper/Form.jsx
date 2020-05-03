@@ -3,15 +3,31 @@ import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const Form = (props) => {
-  return (
-    <form className="siimple-form" onSubmit={props.handleAdd}>
-      <div className="siimple-form-field">
-        <StyledTextField required id="filled-basic" name="title" label="URL" variant="filled"/>
-        <StyledButton type="submit" variant="contained">Send</StyledButton>
-      </div>
-    </form>
-  );
+import { connect } from "react-redux";
+import { createPaper } from '../../actions/Paper';
+
+
+class Form extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  handleAdd = e => {
+    e.preventDefault();
+    this.props.dispatch(createPaper({url: e.target.url.value}))
+    e.target.url.value = '';
+  }
+
+  render() {
+    return (
+      <form className="siimple-form" onSubmit={this.handleAdd}>
+        <div className="siimple-form-field">
+          <StyledTextField required id="filled-basic" name="url" label="URL" variant="filled"/>
+          <StyledButton type="submit" variant="contained">Send</StyledButton>
+        </div>
+      </form>
+    );
+  }
 }
 
 const StyledTextField = styled(TextField)`
@@ -31,4 +47,9 @@ const StyledButton = styled(Button)`
   }
 `;
 
-export default Form;
+export default connect(state => (
+  {
+    user: state.user,
+    paper: state.paper,
+  }
+))(Form)

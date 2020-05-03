@@ -54,7 +54,7 @@ const styles = theme => ({
 
 class SignUp extends React.Component {
   componentWillMount = () => {
-    if (this.props.user.session) {
+    if (this.props.user.token) {
       this.props.history.push("/");
     }
   }

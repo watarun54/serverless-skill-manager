@@ -66,13 +66,13 @@ class SignIn extends React.Component {
   }
 
   componentWillMount = () => {
-    if (this.props.user.session) {
+    if (this.props.user.token) {
       this.props.history.push("/");
     }
   }
 
   componentWillReceiveProps = nextState => {
-    if (nextState.user.session) {
+    if (nextState.user.token) {
       this.props.history.push("/");
     } else if (nextState.user.status < 0) {
       this.setState({ "message": "Loginできませんでした" });

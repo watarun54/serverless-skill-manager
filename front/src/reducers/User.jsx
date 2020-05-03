@@ -1,13 +1,12 @@
 import { setStorage, getStorage, removeStorage } from "../infra/localStorage";
 
-var initialState = {
-  session: getStorage("token"),
+const initialState = {
+  token: getStorage("token"),
   status: 0 //0:処理前 1:ログイン成功 -1:ログイン失敗                                                                                                                                                            
 };
 
-export default function login(state = initialState, action) {
-
-  var _state = Object.assign({}, state);
+export default function userReducer(state = initialState, action) {
+  const _state = Object.assign({}, state);
   switch (action.type) {
     case "LOGIN_REQUEST":
       _state.status = 0;
@@ -15,8 +14,8 @@ export default function login(state = initialState, action) {
 
     case "LOGIN_RECEIVE_SUCCESS":
       _state.status = 1;
-      _state.session = action.data.token;
-      setStorage("token", _state.session);
+      _state.token = action.data.token;
+      setStorage("token", _state.token);
       return _state;
 
     case "LOGIN_RECEIVE_FAILED":
@@ -24,7 +23,7 @@ export default function login(state = initialState, action) {
       return _state;
 
     case "LOGOUT":
-      _state.session = null;
+      _state.token = null;
       removeStorage("token");
       return _state;
 

@@ -24,6 +24,7 @@ import { compose } from 'redux'
 import { connect } from "react-redux";
 
 import { logout } from "../actions/User";
+import { resetDataPapers } from "../actions/Paper";
 
 import PaperIndex from './paper/Index';
 import SginIn from './SignIn';
@@ -107,12 +108,12 @@ class Container extends React.Component {
     super(props);
     this.state = {
       open: false,
-      menus: this.props.user.session ? authMenus : unauthedMenus,
+      menus: this.props.user.token ? authMenus : unauthedMenus,
     }
   }
 
   componentWillReceiveProps = nextState => {
-    this.setState({menus: nextState.user.session ? authMenus : unauthedMenus})
+    this.setState({menus: nextState.user.token ? authMenus : unauthedMenus})
   }
 
   handleDrawerOpen = () => {
@@ -125,6 +126,7 @@ class Container extends React.Component {
 
   onLogout = e => {
     e.preventDefault();
+    this.props.dispatch(resetDataPapers());
     this.props.dispatch(logout());
     window.location.href = '/login'
   }
@@ -221,6 +223,8 @@ class Container extends React.Component {
 export default compose(
   withStyles(styles, { withTheme: true }),
   connect(state => (
-    { user: state.user }
+    {
+      user: state.user,
+    }
   )
 ))(Container)

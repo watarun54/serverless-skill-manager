@@ -3,9 +3,20 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { connect } from "react-redux";
 
+import { logout } from "../actions/User"
+import { resetDataPapers } from "../actions/Paper"
+
 class Auth extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.paper.tokenExpired === 1) {
+      this.props.dispatch(resetDataPapers());
+      this.props.dispatch(logout());
+      this.props.history.push("/login");
+    }
   }
 
   componentWillMount() {
@@ -17,8 +28,7 @@ class Auth extends React.Component {
   }
 
   checkAuth() {
-    // ログインしてなければログイン画面へとばす
-    if (!this.props.user.session) {
+    if (!this.props.user.token) {
       this.props.history.push("/login");
     }
   }
@@ -35,7 +45,8 @@ Auth.contextTypes = {
 };
 
 const connectedAuth = connect(state => ({
-  user: state.user
+  user: state.user,
+  paper: state.paper
 }))(Auth);
 
 export default withRouter(connectedAuth);

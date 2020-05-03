@@ -5,6 +5,8 @@ import Pagination from "material-ui-flat-pagination";
 import Form from './Form';
 import PaperList from './List';
 
+import { connect } from "react-redux";
+
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -13,14 +15,14 @@ class Index extends React.Component {
   render() {
     return (
       <SiimpleBox className="siimple-box siimple--bg-dark" >
-        <Form handleAdd={this.props.handleAdd}/>
+        <Form/>
         <div className="siimple-rule"></div>
-        <PaperList todos={this.props.todo} offset={this.props.offset} parPage={this.props.parPage} handleDelete={this.props.handleDelete}/>
-        {this.props.todo.length > this.props.parPage &&
+        <PaperList offset={this.props.offset} parPage={this.props.parPage}/>
+        {this.props.paper.paperList.length > this.props.parPage &&
         <StyledPagination
           limit={this.props.parPage}
           offset={this.props.offset}
-          total={this.props.todo.length}
+          total={this.props.paper.paperList.length}
           onClick={(e, offset) => this.props.handleClickPagination(offset)}
           reduced={true}
           size={'small'}
@@ -44,4 +46,8 @@ const StyledPagination = styled(Pagination)`
   border-radius: 5px;
 `;
 
-export default Index;
+export default connect(state => (
+  {
+    paper: state.paper,
+  }
+))(Index)

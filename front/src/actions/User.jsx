@@ -13,6 +13,7 @@ export function login(email, password) {
           token: response.data.token,
           uid: decodedJWT.uid,
           name: decodedJWT.name,
+          email: email,
         }
         dispatch(receiveLoginSuccess(data));
       })
@@ -33,6 +34,58 @@ export function signup(name, email, password) {
       .catch(e => {
         dispatch(receiveUserFailed(e.response.data.message));
       });
+  };
+}
+
+export function getUser() {
+  return (dispatch, getState) => {
+    const user = getState().user;
+
+    dispatch(requestUser());
+    axios.get(restfulApiConfig.apiURL + "/api/users/" + user.uid, {
+      headers: {Authorization: `Bearer ${user.token}`}
+    })
+    .then(response => {
+      dispatch(receiveUserSuccess(response.data.data));
+    })
+    .catch(e => {
+      dispatch(receiveUserFailed(e.response.data.message));
+    });
+  };
+}
+
+export function updateUser(name) {
+  return (dispatch, getState) => {
+    const user = getState().user;
+
+    dispatch(requestUser());
+    axios.put(restfulApiConfig.apiURL + "/api/users/" + user.uid,
+      {name: name},
+      {headers: {Authorization: `Bearer ${user.token}`},
+    })
+    .then(response => {
+      dispatch(receiveUserSuccess(response.data.data));
+    })
+    .catch(e => {
+      dispatch(receiveUserFailed(e.response.data.message));
+    });
+  };
+}
+
+export function deleteUser() {
+  return (dispatch, getState) => {
+    const user = getState().user;
+
+    dispatch(requestUser());
+    axios.delete(restfulApiConfig.apiURL + "/api/users/" + user.uid,
+      {headers: {Authorization: `Bearer ${user.token}`},
+    })
+    .then(response => {
+      dispatch(logout());
+    })
+    .catch(e => {
+      dispatch(receiveUserFailed(e.response.data.message));
+    });
   };
 }
 

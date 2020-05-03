@@ -21,6 +21,7 @@ export default function userReducer(state = initialState, action) {
       _state.token = action.data.token;
       _state.uid = action.data.uid;
       _state.name = action.data.name;
+      _state.email = action.data.email;
       setStorage("token", _state.token);
       return _state;
 
@@ -30,6 +31,9 @@ export default function userReducer(state = initialState, action) {
 
     case "LOGOUT":
       _state.token = null;
+      _state.uid = 0;
+      _state.name = '';
+      _state.email = '';
       removeStorage("token");
       return _state;
 

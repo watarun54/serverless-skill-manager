@@ -73,7 +73,12 @@ class Edit extends React.Component {
     };
   }
 
-  componentWillMount = () => {
+  componentWillReceiveProps = nextState => {
+    if (!nextState.user.token) {
+      this.props.history.push("/login");
+    } else if (nextState.user.errMsg.length > 0) {
+      this.setState({ "message": nextState.user.errMsg });
+    }
   }
 
   handleClickOpen = () => {
@@ -100,7 +105,6 @@ class Edit extends React.Component {
 
   onDelete = () => {
     this.props.dispatch(deleteUser());
-    this.props.history.push("/login");
   }
 
   render() {

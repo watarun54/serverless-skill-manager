@@ -29,7 +29,7 @@ func (controller *UserController) Show(c Context) (err error) {
 		c.JSON(500, NewError(err))
 		return
 	}
-	c.JSON(200, user)
+	c.JSON(200, NewResponse(user))
 	return
 }
 
@@ -39,7 +39,7 @@ func (controller *UserController) Index(c Context) (err error) {
 		c.JSON(500, NewError(err))
 		return
 	}
-	c.JSON(200, users)
+	c.JSON(200, NewResponse(users))
 	return
 }
 
@@ -53,7 +53,7 @@ func (controller *UserController) Create(c Context) (err error) {
 		c.JSON(500, NewError(err))
 		return
 	}
-	c.JSON(201, user)
+	c.JSON(201, NewResponse(user))
 	return
 }
 
@@ -68,7 +68,7 @@ func (controller *UserController) Save(c Context) (err error) {
 		c.JSON(500, NewError(err))
 		return
 	}
-	c.JSON(201, user)
+	c.JSON(201, NewResponse(user))
 	return
 }
 
@@ -82,6 +82,6 @@ func (controller *UserController) Delete(c Context) (err error) {
 		c.JSON(500, NewError(err))
 		return
 	}
-	c.JSON(200, user)
+	c.JSON(200, NewResponse(user))
 	return
 }

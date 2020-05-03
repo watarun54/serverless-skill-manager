@@ -34,7 +34,7 @@ func (controller *PaperController) Show(c Context) (err error) {
 		c.JSON(500, NewError(err))
 		return
 	}
-	c.JSON(200, paper)
+	c.JSON(200, NewResponse(paper))
 	return
 }
 
@@ -48,7 +48,7 @@ func (controller *PaperController) Index(c Context) (err error) {
 		c.JSON(500, NewError(err))
 		return
 	}
-	c.JSON(200, papers)
+	c.JSON(200, NewResponse(papers))
 	return
 }
 
@@ -63,7 +63,7 @@ func (controller *PaperController) Create(c Context) (err error) {
 		c.JSON(500, NewError(err))
 		return
 	}
-	c.JSON(200, paper)
+	c.JSON(200, NewResponse(paper))
 	return
 }
 
@@ -80,7 +80,7 @@ func (controller *PaperController) Update(c Context) (err error) {
 		c.JSON(500, NewError(err))
 		return
 	}
-	c.JSON(200, paper)
+	c.JSON(200, NewResponse(paper))
 	return
 }
 
@@ -96,6 +96,6 @@ func (controller *PaperController) Delete(c Context) (err error) {
 		c.JSON(500, NewError(err))
 		return
 	}
-	c.JSON(200, com)
+	c.JSON(200, NewResponse(com))
 	return
 }

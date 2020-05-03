@@ -1,7 +1,7 @@
 package controllers
 
 type Error struct {
-	Message string
+	Message string `json:"message"`
 }
 
 func NewError(err error) *Error {

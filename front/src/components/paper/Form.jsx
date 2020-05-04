@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { connect } from "react-redux";
 import { createPaper } from '../../actions/Paper';
@@ -23,7 +24,12 @@ class Form extends React.Component {
       <form className="siimple-form" onSubmit={this.handleAdd}>
         <div className="siimple-form-field">
           <StyledTextField required id="filled-basic" name="url" label="URL" variant="filled"/>
-          <StyledButton type="submit" variant="contained">Send</StyledButton>
+          {this.props.paper.isFetching &&
+            <StyledCircularProgress />
+          }
+          {!this.props.paper.isFetching &&
+            <StyledButton type="submit" variant="contained">Send</StyledButton>
+          }
         </div>
       </form>
     );
@@ -45,6 +51,11 @@ const StyledButton = styled(Button)`
     opacity: 0.5;
     color: black;
   }
+`;
+
+const StyledCircularProgress = styled(CircularProgress)`
+  margin-left: 10px;
+  margin-top: 7px;
 `;
 
 export default connect(state => (

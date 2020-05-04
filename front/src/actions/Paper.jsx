@@ -91,6 +91,39 @@ export const createPaper = (data) => {
   }
 }
 
+export const editPaper = (data) => {
+  return async (dispatch, getState) => {
+    const paper = getState().paper;
+    const user = getState().user;
+    let token = user.token;
+
+    dispatch(startRequest(paper));
+
+    axios.put(`${apiURL}/api/papers/${data.id}`,
+      { text: data.text, url: data.url },
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.data) {
+          const newPaperList = paper.paperList.map(v => {
+            if (v.id === data.id) { return res.data.data; }
+            return v;
+          });
+          dispatch(receiveData(null, newPaperList));
+          console.log("update and set");
+        } else {
+          dispatch(receiveTokenExpired(user));
+        }
+      }).catch(err => {
+        dispatch(receiveData(err))
+        console.log(err);
+      })
+
+    dispatch(finishRequest(paper));
+  }
+}
+
 export const deletePaper = (id) => {
   return async (dispatch, getState) => {
     const paper = getState().paper;

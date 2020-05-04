@@ -11,7 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
-import FolderIcon from '@material-ui/icons/Folder';
+import LinkIcon from '@material-ui/icons/Link';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from "@material-ui/core/styles";
@@ -65,7 +65,7 @@ class PaperList extends React.Component {
                   <ListItem>
                     <ListItemAvatar>
                       <Avatar>
-                        <FolderIcon />
+                        <LinkIcon color="primary" />
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText>

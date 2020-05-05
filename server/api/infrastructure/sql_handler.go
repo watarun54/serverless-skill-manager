@@ -1,8 +1,13 @@
 package infrastructure
 
 import (
+	"fmt"
+	"log"
+	"os"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/joho/godotenv"
 
 	"github.com/watarun54/serverless-skill-manager/server/interfaces/database"
 )
@@ -13,10 +18,24 @@ type SqlHandler struct {
 }
 
 func NewSqlHandler() database.SqlHandler {
-	conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+	isLambda := os.Getenv("LAMBDA")
+	if isLambda != "TRUE" {
+		envPath := fmt.Sprintf("%s.env", os.Getenv("GO_ENV"))
+		err := godotenv.Load(os.ExpandEnv(envPath))
+		if err != nil {
+			panic(err)
+		}
+	}
+	dbHost := os.Getenv("DB_HOST")
+	dbName := os.Getenv("DB_NAME")
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASS")
+	dbURL := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbName)
+	conn, err := gorm.Open("mysql", dbURL)
 	if err != nil {
 		panic(err)
 	}
+	log.Println("connected to", dbHost)
 	sqlHandler := new(SqlHandler)
 	sqlHandler.Conn = conn
 	return sqlHandler

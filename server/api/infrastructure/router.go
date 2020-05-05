@@ -1,13 +1,24 @@
 package infrastructure
 
 import (
+	"os"
+	"context"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/awslabs/aws-lambda-go-api-proxy/echo"
+
 	"github.com/watarun54/serverless-skill-manager/server/interfaces/controllers"
 )
 
+var echoLambda *echoadapter.EchoLambda
+
+func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	return echoLambda.ProxyWithContext(ctx, req)
+}
+
 func Init() {
-	// Echo instance
 	e := echo.New()
 
 	scrapeController := controllers.NewScrapeController(NewScrapeHandler())
@@ -17,11 +28,12 @@ func Init() {
 	roomController := controllers.NewRoomController(NewSqlHandler())
 	commentController := controllers.NewCommentController(NewSqlHandler())
 
-	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-
 	e.Use(middleware.CORS())
+
+	// Health Check
+	e.GET("/", func(c echo.Context) error { return c.String(200, "OK") })
 
 	e.POST("/login", func(c echo.Context) error { return authController.Login(c) })
 	e.POST("/signup", func(c echo.Context) error { return userController.Create(c) })
@@ -54,5 +66,11 @@ func Init() {
 	api.DELETE("/rooms/:id", func(c echo.Context) error { return roomController.Delete(c) })
 
 	// Start server
-	e.Logger.Fatal(e.Start(":8000"))
+	isLambda := os.Getenv("LAMBDA")
+	if isLambda == "TRUE" {
+		echoLambda = echoadapter.New(e)
+		lambda.Start(Handler)
+	} else {
+		e.Logger.Fatal(e.Start(":8000"))
+	}
 }

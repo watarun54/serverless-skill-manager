@@ -15,3 +15,7 @@ sw.*
 *.swp
 
 .vscode
+.env
+
+api/server
+api/server.zip

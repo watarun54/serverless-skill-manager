@@ -17,7 +17,7 @@ upload-s3: build zip
 	aws s3 cp server.zip s3://serverless-skill-manager/ &&\
 	rm server && rm server.zip
 
-update-function: build zip
+deploy: build zip
 	cd api &&\
 	aws lambda update-function-code --function-name serverless-skill-manager --zip-file fileb://server.zip &&\
 	rm server && rm server.zip

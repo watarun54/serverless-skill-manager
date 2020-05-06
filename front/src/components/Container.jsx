@@ -190,7 +190,7 @@ class Container extends React.Component {
               if (hash.path == '/loguot') {
                 return (
                   <Link key={index} to='/' onClick={this.onLogout.bind(this)} className={classes.link}>
-                  <ListItem button key={index}>
+                  <ListItem button key={index} onClick={this.handleDrawerClose}>
                     <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                     <ListItemText primary={hash.text} />
                   </ListItem>
@@ -199,7 +199,7 @@ class Container extends React.Component {
               }
               return (
                 <Link key={index} to={hash.path} className={classes.link}>
-                <ListItem button key={index}>
+                <ListItem button key={index} onClick={this.handleDrawerClose}>
                   <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                   <ListItemText primary={hash.text} />
                 </ListItem>

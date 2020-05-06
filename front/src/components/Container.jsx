@@ -166,7 +166,7 @@ class Container extends React.Component {
               Skill Manager
             </Typography>
             {this.props.user.name.length > 0 &&
-              <Typography>{this.props.user.name}さん</Typography>
+              <Typography>{this.props.user.name} さん</Typography>
             }
           </Toolbar>
         </AppBar>

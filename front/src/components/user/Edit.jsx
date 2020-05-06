@@ -21,7 +21,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { compose } from 'redux'
 import { withRouter } from 'react-router';
 import { connect } from "react-redux";
-import { updateUser, deleteUser } from "../../actions/User";
+import { getUser, updateUser, deleteUser } from "../../actions/User";
 
 
 function Copyright() {
@@ -69,8 +69,14 @@ class Edit extends React.Component {
     super(props);
     this.state = {
       open: false,
-      message: null
+      message: null,
+      userName: '',
+      lineId: '',
     };
+  }
+
+  componentDidMount = () => {
+    this.props.dispatch(getUser());
   }
 
   componentWillReceiveProps = nextState => {
@@ -79,6 +85,10 @@ class Edit extends React.Component {
     } else if (nextState.user.errMsg.length > 0) {
       this.setState({ "message": nextState.user.errMsg });
     }
+    this.setState({
+      userName: nextState.user.name,
+      lineId: nextState.user.lineId
+    });
   }
 
   handleClickOpen = () => {
@@ -93,18 +103,27 @@ class Edit extends React.Component {
     e.preventDefault();
 
     let name = e.target.name.value;
+    let lineId = e.target.line_id.value;
 
-    if (name) {
-      this.setState({ "message": null });
-      this.props.dispatch(updateUser(name));
-      this.setState({ "message": `「${name}」に変更されました` });
+    if (name === this.props.user.name && lineId === this.props.user.lineId) {
+      this.setState({ "message": "変更内容を入力してください" });
     } else {
-      this.setState({ "message": "Nameを入力してください" });
+      this.setState({ "message": null });
+      this.props.dispatch(updateUser(name, lineId));
+      this.setState({ "message": `正常に変更されました` });
     }
   }
 
   onDelete = () => {
     this.props.dispatch(deleteUser());
+  }
+
+  onChangeUserName = e => {
+    this.setState({userName: e.target.value});
+  }
+
+  onChangeLineId = e => {
+    this.setState({lineId: e.target.value});
   }
 
   render() {
@@ -127,11 +146,26 @@ class Edit extends React.Component {
                   autoComplete="name"
                   name="name"
                   variant="outlined"
+                  margin="normal"
                   required
                   fullWidth
                   id="name"
                   label="Name"
-                  defaultValue={this.props.user.name}
+                  value = {this.state.userName}
+                  onChange={this.onChangeUserName}
+                  autoFocus
+                />
+                <TextField
+                  autoComplete="line_id"
+                  name="line_id"
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="line_id"
+                  label="Line ID"
+                  value = {this.state.lineId}
+                  onChange={this.onChangeLineId}
                   autoFocus
                 />
               </Grid>

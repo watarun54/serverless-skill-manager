@@ -54,13 +54,14 @@ export function getUser() {
   };
 }
 
-export function updateUser(name) {
+export function updateUser(name, lineId) {
   return (dispatch, getState) => {
     const user = getState().user;
 
     dispatch(requestUser());
+    const data = {name: name, line_id: lineId};
     axios.put(restfulApiConfig.apiURL + "/api/users/" + user.uid,
-      {name: name},
+      data,
       {headers: {Authorization: `Bearer ${user.token}`},
     })
     .then(response => {

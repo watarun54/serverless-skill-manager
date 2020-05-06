@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/line/line-bot-sdk-go/linebot"
 	"os"
+	"log"
+	"github.com/line/line-bot-sdk-go/linebot"
 
 	"github.com/watarun54/serverless-skill-manager/server/domain"
 	"github.com/watarun54/serverless-skill-manager/server/interfaces/database"
@@ -85,8 +86,7 @@ func (controller *LinebotController) Post(c Context) (err error) {
 				}
 				resMessage := linebot.NewTextMessage(message.Text)
 				if _, err = bot.ReplyMessage(event.ReplyToken, resMessage).Do(); err != nil {
-					c.JSON(500, NewError(err))
-					return
+					log.Printf("send error: %v", err)
 				}
 			}
 		}

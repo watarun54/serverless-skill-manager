@@ -85,6 +85,10 @@ func (handler *SqlHandler) Set(name string, value interface{}) *gorm.DB {
 	return handler.Conn.Set(name, value)
 }
 
+func (handler *SqlHandler) Scan(dest interface{}) *gorm.DB {
+	return handler.Conn.Scan(dest)
+}
+
 func (handler *SqlHandler) Association(column string) *gorm.Association {
 	return handler.Conn.Association(column)
 }

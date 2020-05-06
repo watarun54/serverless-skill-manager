@@ -37,7 +37,7 @@ func (repo *UserRepository) FindByLineID(lineID string) (user domain.User, err e
 }
 
 func (repo *UserRepository) FindAll() (users domain.Users, err error) {
-	if err = repo.Debug().Debug().Find(&users).Error; err != nil {
+	if err = repo.Debug().Find(&users).Error; err != nil {
 		return
 	}
 	return
@@ -52,10 +52,9 @@ func (repo *UserRepository) Store(u domain.User) (user domain.User, err error) {
 }
 
 func (repo *UserRepository) Update(u domain.User) (user domain.User, err error) {
-	if err = repo.Debug().Take(&domain.User{}, u.ID).Updates(&u).Error; err != nil {
+	if err = repo.Debug().Take(&domain.User{}, u.ID).Updates(&u).Scan(&user).Error; err != nil {
 		return
 	}
-	user = u
 	return
 }
 

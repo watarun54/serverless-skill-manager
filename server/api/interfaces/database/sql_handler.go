@@ -14,6 +14,7 @@ type SqlHandler interface {
 	Where(interface{}, ...interface{}) *gorm.DB
 	Preload(string, ...interface{}) *gorm.DB
 	Set(string, interface{}) *gorm.DB
+	Scan(interface{}) *gorm.DB
 	Association(string) *gorm.Association
 	Replace(...interface{}) *gorm.Association
 	Debug() *gorm.DB

@@ -7,6 +7,7 @@ type (
 		FindById(id int) (domain.User, error)
 		FindByIds(ids []int) (domain.Users, error)
 		FindByEmail(email string) (domain.User, error)
+		FindByLineID(lineID string) (domain.User, error)
 		FindAll() (domain.Users, error)
 		Store(domain.User) (domain.User, error)
 		Update(domain.User) (domain.User, error)
@@ -23,6 +24,7 @@ func (interactor *UserInteractor) ConvertUserFormToUser(userForm domain.UserForm
 	user.Name = userForm.Name
 	user.Email = userForm.Email
 	user.HashedPassword = userForm.HashedPassword
+	user.LineID = userForm.LineID
 	return
 }
 
@@ -33,6 +35,11 @@ func (interactor *UserInteractor) UserById(id int) (user domain.User, err error)
 
 func (interactor *UserInteractor) UserByEmail(email string) (user domain.User, err error) {
 	user, err = interactor.UserRepository.FindByEmail(email)
+	return
+}
+
+func (interactor *UserInteractor) UserByLineID(lineID string) (user domain.User, err error) {
+	user, err = interactor.UserRepository.FindByLineID(lineID)
 	return
 }
 

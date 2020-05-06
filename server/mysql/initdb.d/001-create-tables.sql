@@ -7,6 +7,7 @@ create table IF not exists `users` (
  `name`             VARCHAR(255) NOT NULL,
  `email`            VARCHAR(255) NOT NULL UNIQUE,
  `hashed_password`  VARCHAR(255) NOT NULL,
+ `line_id`          VARCHAR(255) UNIQUE,
  `created_at`       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `updated_at`       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)

@@ -1,13 +1,13 @@
 package infrastructure
 
 import (
-	"os"
 	"context"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/awslabs/aws-lambda-go-api-proxy/echo"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
+	"os"
 
 	"github.com/watarun54/serverless-skill-manager/server/interfaces/controllers"
 )
@@ -22,6 +22,7 @@ func Init() {
 	e := echo.New()
 
 	scrapeController := controllers.NewScrapeController(NewScrapeHandler())
+	linebotController := controllers.NewLinebotController(NewSqlHandler(), NewScrapeHandler())
 	authController := controllers.NewAuthController(NewSqlHandler())
 	userController := controllers.NewUserController(NewSqlHandler())
 	paperController := controllers.NewPaperController(NewSqlHandler(), NewScrapeHandler())
@@ -39,6 +40,10 @@ func Init() {
 	e.POST("/signup", func(c echo.Context) error { return userController.Create(c) })
 
 	e.POST("/scrape/title", func(c echo.Context) error { return scrapeController.GetPaperTitle(c) })
+
+	line := e.Group("/linebot")
+	line.GET("", func(c echo.Context) error { return linebotController.GetTest(c) })
+	line.POST("", func(c echo.Context) error { return linebotController.Post(c) })
 
 	api := e.Group("/api")
 	api.Use(middleware.JWTWithConfig(controllers.NewJWTConfig()))

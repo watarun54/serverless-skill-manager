@@ -29,6 +29,13 @@ func (repo *UserRepository) FindByEmail(email string) (user domain.User, err err
 	return
 }
 
+func (repo *UserRepository) FindByLineID(lineID string) (user domain.User, err error) {
+	if err = repo.Debug().Where("line_id = ?", lineID).Take(&user).Error; err != nil {
+		return
+	}
+	return
+}
+
 func (repo *UserRepository) FindAll() (users domain.Users, err error) {
 	if err = repo.Debug().Debug().Find(&users).Error; err != nil {
 		return

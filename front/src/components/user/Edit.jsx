@@ -153,7 +153,6 @@ class Edit extends React.Component {
                   label="Name"
                   value = {this.state.userName}
                   onChange={this.onChangeUserName}
-                  autoFocus
                 />
                 <TextField
                   autoComplete="line_id"
@@ -166,7 +165,6 @@ class Edit extends React.Component {
                   label="Line ID"
                   value = {this.state.lineId}
                   onChange={this.onChangeLineId}
-                  autoFocus
                 />
               </Grid>
               <Grid item xs={6}>

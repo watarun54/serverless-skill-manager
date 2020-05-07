@@ -8,7 +8,7 @@ export default class App extends Component {
     this.state = {
       todo: [],
       offset: 0,
-      parPage: 10,
+      parPage: 50,
     };
     this.handleClickPagination = this.handleClickPagination.bind(this);
   }

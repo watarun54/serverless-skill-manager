@@ -2,8 +2,10 @@ package infrastructure
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/saintfish/chardet"
@@ -16,9 +18,15 @@ func NewScrapeHandler() *ScrapeHandler {
 	return &ScrapeHandler{}
 }
 
-func (handler *ScrapeHandler) GetTitleFromURL(url string) (title string, err error) {
+func (handler *ScrapeHandler) GetTitleFromURL(URL string) (title string, err error) {
+	// Google検索の場合はクエリから検索ワードを抽出
+	title, err = extractGoogleTitle(URL)
+	if err != nil || title != "" {
+		return
+	}
+
 	// Getリクエスト
-	res, err := http.Get(url)
+	res, err := http.Get(URL)
 	if err != nil {
 		return
 	}
@@ -52,5 +60,23 @@ func (handler *ScrapeHandler) GetTitleFromURL(url string) (title string, err err
 
 	// titleを抜き出し
 	title = doc.Find("title").Text()
+	return
+}
+
+func extractGoogleTitle(URL string) (title string, err error) {
+	u, err := url.Parse(URL)
+	if err != nil {
+		return
+	}
+	host := fmt.Sprintf(string(u.Host))
+	if host == "www.google.com" || host == "www.google.co.jp" {
+		for key, values := range u.Query() {
+			if key == "q" {
+				for _, v := range values {
+					title = fmt.Sprintf("%s - Google 検索", v)
+				}
+			}
+		}
+	}
 	return
 }

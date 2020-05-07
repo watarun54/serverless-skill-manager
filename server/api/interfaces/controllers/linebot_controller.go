@@ -2,9 +2,10 @@ package controllers
 
 import (
 	"fmt"
-	"os"
-	"log"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"log"
+	"os"
+	"regexp"
 
 	"github.com/watarun54/serverless-skill-manager/server/domain"
 	"github.com/watarun54/serverless-skill-manager/server/interfaces/database"
@@ -67,9 +68,12 @@ func (controller *LinebotController) Post(c Context) (err error) {
 				if user.ID == 0 {
 					message.Text = fmt.Sprintf("以下の Line ID を登録してください\n\n%v", lineID)
 				} else {
+					// URLを抽出
+					re, _ := regexp.Compile(`http(s)://[\w\d/%#$&?()~_.=+-]+`)
+					url := string(re.Find([]byte(message.Text)))
 					com := domain.Paper{
 						UserID: user.ID,
-						URL:    message.Text,
+						URL:    url,
 					}
 					c.Bind(&com)
 					title, err := controller.ScrapeHandler.GetTitleFromURL(com.URL)

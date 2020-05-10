@@ -69,9 +69,8 @@ class PaperList extends React.Component {
     this.props.dispatch(getPapers());
   }
 
-  handleDelete = i => {
-    const id = this.props.paper.paperList[i].id
-    this.props.dispatch(deletePaper(id))
+  handleDelete = paperId => {
+    this.props.dispatch(deletePaper(paperId))
   }
 
   handleClickOpen = i => {
@@ -115,7 +114,7 @@ class PaperList extends React.Component {
                         <IconButton edge="end" aria-label="edit" onClick={() => this.handleClickOpen(i)} className={classes.iconButton}>
                           <EditIcon />
                         </IconButton>
-                        <IconButton edge="end" aria-label="delete" onClick={() => this.handleDelete(i)} className={classes.iconButton}>
+                        <IconButton edge="end" aria-label="delete" onClick={() => this.handleDelete(paper.id)} className={classes.iconButton}>
                           <DeleteIcon style={{ color: '#ee675d' }} />
                         </IconButton>
                       </ListItemSecondaryAction>

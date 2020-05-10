@@ -12,13 +12,11 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import Button from '@material-ui/core/Button';
 import { withStyles } from "@material-ui/core/styles";
 
 import { compose } from 'redux'
@@ -32,6 +30,7 @@ import SginIn from './SignIn';
 import SignUp from './SignUp';
 import UserEdit from './user/Edit';
 import Auth from "./Auth.jsx";
+import ScrollToTop from "./ScrollToTop.jsx";
 
 
 const drawerWidth = 240;
@@ -80,7 +79,7 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -144,6 +143,7 @@ class Container extends React.Component {
     return (
       <div className={classes.root}>
         <BrowserRouter>
+        <ScrollToTop/>
 
         <CssBaseline />
         <AppBar

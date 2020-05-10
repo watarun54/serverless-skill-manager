@@ -6,6 +6,8 @@ import Grid from '@material-ui/core/Grid';
 
 import Form from './Form';
 import PaperList from './List';
+import PaperPagination from './Pagination';
+
 
 class PaperIndex extends React.Component {
   constructor(props) {
@@ -18,19 +20,9 @@ class PaperIndex extends React.Component {
         <SiimpleBox className="siimple-box siimple--bg-dark" >
           <Form/>
           <div className="siimple-rule"></div>
+          <PaperPagination {...this.props} />
           <PaperList offset={this.props.offset} parPage={this.props.parPage}/>
-          {this.props.paper.paperList.length > this.props.parPage &&
-            <Grid item s={12} md={9}>
-              <StyledPagination
-                limit={this.props.parPage}
-                offset={this.props.offset}
-                total={this.props.paper.paperList.length}
-                onClick={(e, offset) => this.props.handleClickPagination(offset)}
-                reduced={true}
-                size={'small'}
-              />
-            </Grid>
-          }
+          <PaperPagination {...this.props} />
         </SiimpleBox>
       </Grid>
     );
@@ -41,13 +33,6 @@ const SiimpleBox = styled.div`
   min-height: 550px;
   margin-bottom: 0;
   width: 100%;
-`;
-
-const StyledPagination = styled(Pagination)`
-  background-color: white;
-  text-align: center;
-  margin-top: 20px;
-  border-radius: 5px;
 `;
 
 export default connect(state => (

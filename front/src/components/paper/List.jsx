@@ -81,11 +81,10 @@ class PaperList extends React.Component {
     this.setState({ openKey: -1 });
   }
 
-  handleEdit = (e, i) => {
+  handleEdit = (e, paperId) => {
     e.preventDefault();
-    const id = this.props.paper.paperList[i].id
     const data = {
-      id: id,
+      id: paperId,
       text: e.target.text.value,
       url: e.target.url.value,
     }
@@ -124,7 +123,7 @@ class PaperList extends React.Component {
                     }
 
                     <Dialog open={this.state.openKey === i} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-                      <form onSubmit={(e) => this.handleEdit(e, i)}>
+                      <form onSubmit={(e) => this.handleEdit(e, paper.id)}>
                         <DialogContent>
                           <TextField
                             autoFocus

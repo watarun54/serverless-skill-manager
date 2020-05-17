@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import Pagination from "material-ui-flat-pagination";
 import { connect } from "react-redux";
 import Grid from '@material-ui/core/Grid';
 
 import Form from './Form';
 import PaperList from './List';
+import PaperDeletedList from './DeletedList';
 import PaperPagination from './Pagination';
 
 
@@ -17,13 +17,23 @@ class PaperIndex extends React.Component {
   render() {
     return (
       <Grid item s={12} md={10}>
-        <SiimpleBox className="siimple-box siimple--bg-dark" >
-          <Form/>
-          <div className="siimple-rule"></div>
-          <PaperPagination {...this.props} />
-          <PaperList offset={this.props.offset} parPage={this.props.parPage}/>
-          <PaperPagination {...this.props} />
-        </SiimpleBox>
+        {!this.props.is_deleted &&
+          <SiimpleBox className="siimple-box siimple--bg-dark" >
+            <Form/>
+            <div className="siimple-rule"></div>
+            <PaperPagination {...this.props} />
+            <PaperList offset={this.props.offset} parPage={this.props.parPage}/>
+            <PaperPagination {...this.props} />
+          </SiimpleBox>
+        }
+        {this.props.is_deleted &&
+          <SiimpleBox className="siimple-box siimple--bg-dark" >
+            <div className="siimple-rule"></div>
+            <PaperPagination {...this.props} />
+            <PaperDeletedList offset={this.props.offset} parPage={this.props.parPage}/>
+            <PaperPagination {...this.props} />
+          </SiimpleBox>
+        }
       </Grid>
     );
   }

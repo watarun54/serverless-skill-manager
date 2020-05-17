@@ -114,8 +114,8 @@ const unauthedMenus = [
 
 const authMenus = [
   {text: 'Home', path: '/'},
-  {text: 'Setting', path: '/setting'},
   {text: 'Trash', path: '/trash'},
+  {text: 'Setting', path: '/setting'},
   {text: 'Logout', path: '/loguot'},
 ];
 
@@ -235,8 +235,8 @@ class Container extends React.Component {
             <Auth>
               <Switch>
                 <Route exact path='/'><PaperIndex {...this.props} is_deleted={false} /></Route>
-                <Route path='/setting'><UserEdit /></Route>
                 <Route path='/trash'><PaperIndex {...this.props} is_deleted={true} /></Route>
+                <Route path='/setting'><UserEdit /></Route>
               </Switch>
             </Auth>
           </Switch>

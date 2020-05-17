@@ -92,6 +92,23 @@ func (controller *PaperController) Update(c Context) (err error) {
 	return
 }
 
+func (controller *PaperController) DeleteLogically(c Context) (err error) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	uid := userIDFromToken(c)
+	com := domain.Paper{
+		ID:     id,
+		UserID: uid,
+		IsDeleted: &[]bool{true}[0],
+	}
+	paper, err := controller.Interactor.Update(com)
+	if err != nil {
+		c.JSON(500, NewError(err))
+		return
+	}
+	c.JSON(200, NewResponse(paper))
+	return
+}
+
 func (controller *PaperController) Delete(c Context) (err error) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	uid := userIDFromToken(c)

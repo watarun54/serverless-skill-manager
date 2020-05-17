@@ -84,6 +84,7 @@ create table IF not exists `papers` (
  `url`              VARCHAR(255) NOT NULL,
  `text`             VARCHAR(255) NOT NULL,
  `user_id`          BIGINT NOT NULL,
+ `is_deleted`       BOOLEAN DEFAULT 0,
  `created_at`       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `updated_at`       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)

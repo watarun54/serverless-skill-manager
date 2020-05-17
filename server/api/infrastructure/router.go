@@ -56,7 +56,8 @@ func Init() {
 	api.GET("/papers/:id", func(c echo.Context) error { return paperController.Show(c) })
 	api.POST("/papers", func(c echo.Context) error { return paperController.Create(c) })
 	api.PUT("/papers/:id", func(c echo.Context) error { return paperController.Update(c) })
-	api.DELETE("/papers/:id", func(c echo.Context) error { return paperController.Delete(c) })
+	api.DELETE("/papers/:id", func(c echo.Context) error { return paperController.DeleteLogically(c) })
+	api.DELETE("/papers/:id/complete", func(c echo.Context) error { return paperController.Delete(c) })
 
 	api.GET("/comments", func(c echo.Context) error { return commentController.Index(c) })
 	api.GET("/comments/:id", func(c echo.Context) error { return commentController.Show(c) })

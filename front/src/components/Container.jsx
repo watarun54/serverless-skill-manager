@@ -15,8 +15,12 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import HomeIcon from '@material-ui/icons/Home';
+import LockIcon from '@material-ui/icons/Lock';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import SettingsIcon from '@material-ui/icons/Settings';
+import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import { withStyles } from "@material-ui/core/styles";
 
 import { compose } from 'redux'
@@ -196,7 +200,7 @@ class Container extends React.Component {
                 return (
                   <Link key={index} to='/' onClick={this.onLogout.bind(this)} className={classes.link}>
                   <ListItem button key={index} onClick={this.handleDrawerClose}>
-                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                    <ListItemIcon><LockIcon /></ListItemIcon>
                     <ListItemText primary={hash.text} />
                   </ListItem>
                   </Link>
@@ -205,7 +209,13 @@ class Container extends React.Component {
               return (
                 <Link key={index} to={hash.path} className={classes.link}>
                 <ListItem button key={index} onClick={this.handleDrawerClose}>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                  <ListItemIcon>
+                    {hash.path == '/' && <HomeIcon /> }
+                    {hash.path == '/setting' && <SettingsIcon /> }
+                    {hash.path == '/trash' && <DeleteSweepIcon /> }
+                    {hash.path == '/login' && <LockOpenIcon /> }
+                    {hash.path == '/signup' && <PersonAddIcon /> }
+                  </ListItemIcon>
                   <ListItemText primary={hash.text} />
                 </ListItem>
                 </Link>
